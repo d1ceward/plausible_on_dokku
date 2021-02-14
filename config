@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+export PLAUSIBLE_IMAGE=${PLAUSIBLE_IMAGE:="plausible/analytics"}
+export PLAUSIBLE_IMAGE_VERSION=${PLAUSIBLE_IMAGE_VERSION:="latest"}
+
+export PLAUSIBLE_ROOT="/var/lib/dokku/services/plausible"

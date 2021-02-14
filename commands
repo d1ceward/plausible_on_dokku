@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+source "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/config"
+set -eo pipefail; [[ $DOKKU_TRACE ]] && set -x
+source "${PLUGIN_CORE_AVAILABLE_PATH}/common/functions"
+
+export SUBCOMMAND_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/subcommands"
+
+plausible_help_contents_func() {
+  pushd "${SUBCOMMAND_ROOT}" > /dev/null 2>&1
+  for cmd in *; do
+    # get args from declare args="..."
+    args="$(grep args "${SUBCOMMAND_ROOT}/${cmd}" | head -1 || true)"
+    eval "${args}"
+
+    cmd_line="$(echo -e "${cmd} ${args}" | sed -e 's/[[:space:]]*$//')"
+
+    # get desc from declare desc="..."
+    desc="$(grep desc "${SUBCOMMAND_ROOT}/${cmd}" | head -1)"
+    eval "${desc}"
+
+    echo -e "    plausible:${cmd_line}, \033[2;37m${desc}\033[m"
+  done
+}
+
+plausible_help_print_func() {
+  if [[ "${1}" == "plausible" ]] || [[ "${1}" = "plausible:help" ]] || [[ "${1}" == "plausible:default" ]]
+  then
+    echo -e "$(tput bold)usage\033[m: dokku plausible[:COMMAND]"
+    echo ''
+    echo -e "dokku $(tput bold)plausible\033[m commands:"
+    echo ''
+    plausible_help_contents_func | sort | column -c2 -t -s,
+  else
+    cat<<help_desc
+    plausible, Plugin for managing plausible
+help_desc
+  fi
+}
+
+case "$1" in
+  help | plausible | plausible:help | plausible:default )
+    plausible_help_print_func "${@}"
+    ;;
+  *)
+    exit "${DOKKU_NOT_IMPLEMENTED_EXIT}"
+    ;;
+esac

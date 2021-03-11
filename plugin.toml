@@ -1,4 +1,0 @@
-[plugin]
-description = "Plausible website analytics tool for dokku"
-version = "1.0.0"
-[plugin.config]

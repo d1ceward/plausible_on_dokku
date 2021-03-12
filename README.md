@@ -80,7 +80,7 @@ dokku config:set plausible CLICKHOUSE_DATABASE_URL='http://dokku-clickhouse-plau
 ### Setting secret key
 
 ```bash
-dokku config:set plausible SECRET_KEY_BASE=$(echo `openssl rand -base64 45` | tr -d \=+ | cut -c 1-64)
+dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -hex 64)
 ```
 
 ### Add BASE_URL to environement variables
@@ -103,8 +103,8 @@ dokku config:set plausible MAILER_EMAIL=admin@example.com \
 ### Setting up first admin informations
 
 ```bash
-dokku config:set plausible ADMIN_USER_EMAIL=admin@example.com
-                           ADMIN_USER_NAME=admin
+dokku config:set plausible ADMIN_USER_EMAIL=admin@example.com \
+                           ADMIN_USER_NAME=admin \
                            ADMIN_USER_PWD=admin1234
 ```
 

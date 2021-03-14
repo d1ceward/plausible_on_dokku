@@ -83,13 +83,13 @@ Become (scheme/username/password and port change):
 dokku config:set plausible CLICKHOUSE_DATABASE_URL='http://dokku-clickhouse-plausible:8123/plausible'
 ```
 
-### Setting secret key
+### Setting up secret key
 
 ```bash
 dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -hex 64)
 ```
 
-### Add BASE_URL to environement variables
+### Setting up BASE_URL
 
 ```bash
 dokku config:set plausible BASE_URL=https://plausible.example.com
@@ -112,6 +112,12 @@ dokku config:set plausible MAILER_EMAIL=admin@example.com \
 dokku config:set plausible ADMIN_USER_EMAIL=admin@example.com \
                            ADMIN_USER_NAME=admin \
                            ADMIN_USER_PWD=admin1234
+```
+
+### Disable registration (optional)
+
+```bash
+dokku config:set plausible DISABLE_REGISTRATION=true
 ```
 
 ## Domain setup

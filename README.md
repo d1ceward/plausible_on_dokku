@@ -53,7 +53,7 @@ dokku plugin:install https://github.com/dokku/dokku-clickhouse.git clickhouse
 ```bash
 # Create running plugins
 dokku postgres:create plausible -I 12
-dokku clickhouse:create plausible -I 20.3.8.53
+dokku clickhouse:create plausible -I 20.8.17.25
 ```
 
 ```bash
@@ -76,11 +76,11 @@ Transform CLICKHOUSE_URL to http format like (as exemple) :
 
 Become (scheme/username/password and port change):
 
-- `http://dokku-clickhouse-plausible:8123/plausible`
+- `http://plausible:password@dokku-clickhouse-plausible:8123/plausible`
 
 ```bash
 # Set CLICKHOUSE_DATABASE_URL
-dokku config:set plausible CLICKHOUSE_DATABASE_URL='http://dokku-clickhouse-plausible:8123/plausible'
+dokku config:set plausible CLICKHOUSE_DATABASE_URL='http://plausible:password@dokku-clickhouse-plausible:8123/plausible'
 ```
 
 ### Setting up secret key
@@ -160,6 +160,11 @@ Now we can push Plausible to Dokku (_before_ moving on to the [next part](#domai
 
 ```bash
 git push dokku master
+```
+
+### Manually set proxy settings
+```bash
+dokku proxy:ports-set plausible http:80:8000 https:443:8000
 ```
 
 ## SSL certificate

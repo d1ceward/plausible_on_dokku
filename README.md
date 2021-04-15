@@ -164,12 +164,12 @@ git push dokku master
 
 ### Manually set proxy settings
 ```bash
-dokku proxy:ports-set plausible http:80:8000 https:443:8000
+dokku proxy:ports-set plausible http:80:8000
 ```
 
 ## SSL certificate
 
-Last but not least, we can go an grab the SSL certificate from [Let's
+We can then go an grab the SSL certificate from [Let's
 Encrypt](https://letsencrypt.org/).
 
 ```bash
@@ -181,6 +181,11 @@ dokku config:set --no-restart plausible DOKKU_LETSENCRYPT_EMAIL=you@example.com
 
 # Generate certificate
 dokku letsencrypt plausible
+```
+
+## Proxy https port
+```bash
+dokku proxy:ports-set plausible http:80:8000 https:443:8000
 ```
 
 ## Wrapping up

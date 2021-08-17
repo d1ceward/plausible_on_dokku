@@ -22,13 +22,13 @@ powered mini-Heroku_.
 
 * A working [Dokku host](http://dokku.viewdocs.io/dokku/getting-started/installation/)
 * [PostgreSQL](https://github.com/dokku/dokku-postgres) plugin for Dokku
-* [Clickhouse](https://github.com/dokku/dokku-clickhouse) plufin for Dokku
+* [Clickhouse](https://github.com/dokku/dokku-clickhouse) plugin for Dokku
 * [Letsencrypt](https://github.com/dokku/dokku-letsencrypt) plugin for SSL (optionnal)
 
 # Setup
 
 **Note:** We are going to use the domain `plausible.example.com` for demonstration purposes. Make sure to
-replace it to your domain name.
+replace it with your own domain name.
 
 ## App and plugins
 
@@ -64,14 +64,14 @@ dokku clickhouse:link plausible plausible
 
 ## Configuration
 
-### Add CLICKHOUSE_DATABASE_URL to environement variables
+### Add CLICKHOUSE_DATABASE_URL to environment variables
 
 ```bash
 # Show all enironement variables to copy content of CLICKHOUSE_URL variable
 dokku config plausible
 ```
 
-Transform CLICKHOUSE_URL to http format like (as exemple) :
+Transform CLICKHOUSE_URL to http format like (as example) :
 - `clickhouse://plausible:password@dokku-clickhouse-plausible:9000/plausible`
 
 Become (scheme and port change):
@@ -95,7 +95,7 @@ dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -hex 64)
 dokku config:set plausible BASE_URL=https://plausible.example.com
 ```
 
-### Setting up smtp informations
+### Setting up smtp information
 
 ```bash
 dokku config:set plausible MAILER_EMAIL=admin@example.com \
@@ -106,7 +106,7 @@ dokku config:set plausible MAILER_EMAIL=admin@example.com \
                            SMTP_HOST_SSL_ENABLED=true
 ```
 
-### Setting up first admin informations
+### Setting up first admin information
 
 ```bash
 dokku config:set plausible ADMIN_USER_EMAIL=admin@example.com \

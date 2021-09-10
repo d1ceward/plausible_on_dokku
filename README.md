@@ -120,6 +120,14 @@ dokku config:set plausible ADMIN_USER_EMAIL=admin@example.com \
 dokku config:set plausible DISABLE_REGISTRATION=true
 ```
 
+## Domain setup
+
+To get the routing working, we need to apply a few settings. First we set the domain.
+
+```bash
+dokku domains:set plausible plausible.example.com
+```
+
 ## Push Plausible to Dokku
 
 ### Grabbing the repository
@@ -152,14 +160,6 @@ Now we can push Plausible to Dokku (_before_ moving on to the [next part](#domai
 
 ```bash
 git push dokku master
-```
-
-## Domain setup
-
-To get the routing working, we need to apply a few settings. First we set the domain.
-
-```bash
-dokku domains:set plausible plausible.example.com
 ```
 
 ## SSL certificate

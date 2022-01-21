@@ -181,3 +181,14 @@ dokku letsencrypt plausible
 ## Wrapping up
 
 Your Plausible instance should now be available on [https://plausible.example.com](https://plausible.example.com).
+
+## Bonus: rename script file
+By default, Plausible will use a file called `/js/plausible.js` which is blocked by most adblockers (Adblock business lets you pay to display your ads, but privacy-focused analytics are blocked by default. Yay).
+
+Since Plausible respects user privacy, it seems fair to collect anonymous traffic data. You can add a nginx config file: `vi /home/dokku/plausible/nginx.conf.d/rewrite.conf`:
+
+```
+rewrite ^/js/pls.js$ /js/plausible.js last;
+```
+
+Rename `pls.js` to whatever fits your need, and use this file name from now on.

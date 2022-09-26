@@ -175,7 +175,7 @@ dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 dokku config:set --no-restart plausible DOKKU_LETSENCRYPT_EMAIL=you@example.com
 
 # Generate certificate
-dokku letsencrypt plausible
+dokku letsencrypt:enable plausible
 ```
 
 ## Wrapping up

@@ -1,14 +1,16 @@
 # Pull upstream changes
+echo -e "\033[0;32m====>\033[0m Pull origin..."
 git pull
 
 # Get current release name
 CURRENT_RELEASE=$(git tag | tail -1)
 
 # Get lastest release name
-RELEASE=$(curl --silent "https://github.com/plausible/analytics/releases/latest" | sed 's#.*tag/\(.*\)\".*#\1#' | cut -f2 -d 'v')
+RELEASE=$(curl -s https://api.github.com/repos/plausible/analytics/tags | jq | grep -o '"v[0-9]*\.[0-9]*\.[0-9]*"'| head -1 | sed 's/v//g; s/\"//g')
 
 # Exit script if already up to date
 if [ "v${RELEASE}" = $CURRENT_RELEASE ]; then
+  echo -e "\033[0;32m=>\033[0m Already up to date..."
   exit 0
 fi
 

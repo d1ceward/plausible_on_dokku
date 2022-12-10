@@ -52,8 +52,8 @@ dokku plugin:install https://github.com/dokku/dokku-clickhouse.git clickhouse
 
 ```bash
 # Create running plugins
-dokku postgres:create plausible -I 12
-dokku clickhouse:create plausible -I 21.3.7.62
+dokku postgres:create plausible -I 14.6
+dokku clickhouse:create plausible -I 22.6
 ```
 
 ```bash
@@ -104,14 +104,6 @@ dokku config:set plausible MAILER_EMAIL=admin@example.com \
                            SMTP_USER_NAME=admin@example.com \
                            SMTP_USER_PWD=example1234 \
                            SMTP_HOST_SSL_ENABLED=true
-```
-
-### Setting up first admin information
-
-```bash
-dokku config:set plausible ADMIN_USER_EMAIL=admin@example.com \
-                           ADMIN_USER_NAME=admin \
-                           ADMIN_USER_PWD=admin1234
 ```
 
 ### Disable registration (optional)

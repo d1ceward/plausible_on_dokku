@@ -53,7 +53,7 @@ dokku plugin:install https://github.com/dokku/dokku-clickhouse.git clickhouse
 ```bash
 # Create running plugins
 dokku postgres:create plausible -I 14.6
-dokku clickhouse:create plausible -I 22.6
+dokku clickhouse:create plausible -i clickhouse/clickhouse-server -I 22.6-alpine
 ```
 
 ```bash

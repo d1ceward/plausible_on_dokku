@@ -27,25 +27,22 @@ powered mini-Heroku_.
 
 # Setup
 
-**Note:** We are going to use the domain `plausible.example.com` for demonstration purposes. Make sure to
+**Note :** We are going to use the domain `plausible.example.com` for demonstration purposes. Make sure to
 replace it with your own domain name.
 
 ## App and plugins
 
 ### Create the app
 
-Log onto your Dokku Host to create the Plausible app:
-
+Log onto your Dokku Host to create the Plausible app :
 ```bash
 dokku apps:create plausible
 ```
 
-### Add plugins
-
-Install, create and link PostgreSQL and Clickhouse plugins:
+### Install, create and link PostgreSQL and Clickhouse plugins
 
 ```bash
-# Install plugins on Dokku
+# Install Dokku plugins
 dokku plugin:install https://github.com/dokku/dokku-postgres.git postgres
 dokku plugin:install https://github.com/dokku/dokku-clickhouse.git clickhouse
 ```
@@ -53,7 +50,7 @@ dokku plugin:install https://github.com/dokku/dokku-clickhouse.git clickhouse
 ```bash
 # Create running plugins
 dokku postgres:create plausible -I 14.6
-dokku clickhouse:create plausible -i clickhouse/clickhouse-server -I 22.6.9.11
+dokku clickhouse:create plausible -i clickhouse/clickhouse-server -I 22.9.7.34
 ```
 
 ```bash
@@ -64,29 +61,10 @@ dokku clickhouse:link plausible plausible
 
 ## Configuration
 
-### Add CLICKHOUSE_DATABASE_URL to environment variables
-
-```bash
-# Show all enironement variables to copy content of CLICKHOUSE_URL variable
-dokku config plausible
-```
-
-Transform CLICKHOUSE_URL to http format like (as example) :
-- `clickhouse://plausible:password@dokku-clickhouse-plausible:9000/plausible`
-
-Become (scheme and port change):
-
-- `http://plausible:password@dokku-clickhouse-plausible:8123/plausible`
-
-```bash
-# Set CLICKHOUSE_DATABASE_URL
-dokku config:set plausible CLICKHOUSE_DATABASE_URL='http://plausible:password@dokku-clickhouse-plausible:8123/plausible'
-```
-
 ### Setting up secret key
 
 ```bash
-dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -hex 64)
+dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -base64 64 | tr -d '\n')
 ```
 
 ### Setting up BASE_URL
@@ -112,7 +90,7 @@ dokku config:set plausible MAILER_EMAIL=admin@example.com \
 dokku config:set plausible DISABLE_REGISTRATION=true
 ```
 
-## Domain setup
+## Domain
 
 To get the routing working, we need to apply a few settings. First we set the domain.
 
@@ -126,29 +104,21 @@ dokku domains:set plausible plausible.example.com
 
 First clone this repository onto your machine.
 
-#### Via SSH
-
 ```bash
+# Via SSH
 git clone git@github.com:d1ceward/plausible_on_dokku.git
-```
 
-#### Via HTTPS
-
-```bash
+# Via HTTPS
 git clone https://github.com/d1ceward/plausible_on_dokku.git
 ```
 
-### Set up git remote
-
-Now you need to set up your Dokku server as a remote.
+### Set up your Dokku server as a Git remote
 
 ```bash
 git remote add dokku dokku@example.com:plausible
 ```
 
-### Push Plausible
-
-Now we can push Plausible to Dokku (_before_ moving on to the [next part](#domain-and-ssl-certificate)).
+### Push Plausible to Dokku
 
 ```bash
 git push dokku master
@@ -174,12 +144,39 @@ dokku letsencrypt:enable plausible
 
 Your Plausible instance should now be available on [https://plausible.example.com](https://plausible.example.com).
 
-## Bonus: rename script file
+### Possible issue with proxy ports mapping
+
+If the Plausible instance is not available at the address https://plausible.example.com check the return of this command :
+```bash
+dokku proxy:ports plausible
+```
+
+```bash
+### Valid return
+-----> Port mappings for plausible
+    -----> scheme  host port  container port
+    http           80         5000
+
+### Invalid return
+-----> Port mappings for plausible
+    -----> scheme  host port  container port
+    http           5000       5000
+```
+
+If the return is not the expected one, execute this command :
+
+```bash
+dokku proxy:ports-set plausible http:80:5000
+```
+
+If the return of the command was valid and Plausible is still not available, feel free to fill an issue in the issue tracker.
+
+## Bonus : Rename script file
 By default, Plausible will use a file called `/js/plausible.js` which is blocked by most adblockers (Adblock business lets you pay to display your ads, but privacy-focused analytics are blocked by default. Yay).
 
 Since Plausible respects user privacy, it seems fair to collect anonymous traffic data. You can add a nginx config file: `vi /home/dokku/plausible/nginx.conf.d/rewrite.conf`:
 
-```
+```nginx
 rewrite ^/js/pls.js$ /js/plausible.js last;
 ```
 

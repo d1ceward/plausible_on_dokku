@@ -126,7 +126,7 @@ git push dokku master
 
 ## SSL certificate
 
-Last but not least, we can go an grab the SSL certificate from [Let's
+Last but not least, we can go and grab the SSL certificate from [Let's
 Encrypt](https://letsencrypt.org/).
 
 ```bash
@@ -167,6 +167,8 @@ If the return is not the expected one, execute this command :
 
 ```bash
 dokku proxy:ports-set plausible http:80:5000
+# if you also setup ssl:
+dokku proxy:ports-set plausible https:443:5000
 ```
 
 If the return of the command was valid and Plausible is still not available, feel free to fill an issue in the issue tracker.

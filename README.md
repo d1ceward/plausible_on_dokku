@@ -15,8 +15,7 @@ CCPA and PECR.
 
 ### What is Dokku?
 
-[Dokku](http://dokku.viewdocs.io/dokku/) is the smallest PaaS implementation you've ever seen - _Docker
-powered mini-Heroku_.
+[Dokku](http://dokku.viewdocs.io/dokku/) is a lightweight implementation of a Platform as a Service (PaaS) that is powered by Docker. It can be thought of as a mini-Heroku.
 
 ### Requirements
 
@@ -27,14 +26,13 @@ powered mini-Heroku_.
 
 # Setup
 
-**Note :** We are going to use the domain `plausible.example.com` for demonstration purposes. Make sure to
-replace it with your own domain name.
+**Note:** Throughout this guide, we will use the domain `plausible.example.com` for demonstration purposes. Make sure to replace it with your actual domain name.
 
 ## App and plugins
 
 ### Create the app
 
-Log onto your Dokku Host to create the Plausible app :
+Log into your Dokku host and create the Minio app:
 ```bash
 dokku apps:create plausible
 ```
@@ -49,8 +47,8 @@ dokku plugin:install https://github.com/dokku/dokku-clickhouse.git clickhouse
 
 ```bash
 # Create running plugins
-dokku postgres:create plausible -I 14.6
-dokku clickhouse:create plausible -i clickhouse/clickhouse-server -I 22.9.7.34
+dokku postgres:create plausible
+dokku clickhouse:create plausible -i clickhouse/clickhouse-server
 ```
 
 ```bash
@@ -73,7 +71,7 @@ dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -base64 64 | tr -d '\n
 dokku config:set plausible BASE_URL=https://plausible.example.com
 ```
 
-### Setting up smtp information
+### Setting up SMTP information
 
 ```bash
 dokku config:set plausible MAILER_EMAIL=admin@example.com \
@@ -92,7 +90,7 @@ dokku config:set plausible DISABLE_REGISTRATION=true
 
 ## Domain
 
-To get the routing working, we need to apply a few settings. First we set the domain.
+To enable routing for the Plausible app, we need to configure the domain. Execute the following command:
 
 ```bash
 dokku domains:set plausible plausible.example.com
@@ -102,7 +100,7 @@ dokku domains:set plausible plausible.example.com
 
 ### Grabbing the repository
 
-First clone this repository onto your machine.
+Begin by cloning this repository onto your local machine.
 
 ```bash
 # Via SSH
@@ -112,13 +110,17 @@ git clone git@github.com:d1ceward/plausible_on_dokku.git
 git clone https://github.com/d1ceward/plausible_on_dokku.git
 ```
 
-### Set up your Dokku server as a Git remote
+### Set up git remote
+
+Now, set up your Dokku server as a remote repository.
 
 ```bash
 git remote add dokku dokku@example.com:plausible
 ```
 
-### Push Plausible to Dokku
+### Push Plausible
+
+Now, you can push the Plausible app to Dokku. Ensure you have completed this step before moving on to the [next section](#ssl-certificate).
 
 ```bash
 git push dokku master
@@ -126,8 +128,7 @@ git push dokku master
 
 ## SSL certificate
 
-Last but not least, we can go and grab the SSL certificate from [Let's
-Encrypt](https://letsencrypt.org/).
+Lastly, let's obtain an SSL certificate from [Let's Encrypt](https://letsencrypt.org/).
 
 ```bash
 # Install letsencrypt plugin
@@ -142,11 +143,12 @@ dokku letsencrypt:enable plausible
 
 ## Wrapping up
 
-Your Plausible instance should now be available on [https://plausible.example.com](https://plausible.example.com).
+Congratulations! Your Plausible instance is now up and running, and you can access it at [https://plausible.example.com](https://plausible.example.com).
 
 ### Possible issue with proxy ports mapping
 
-If the Plausible instance is not available at the address https://plausible.example.com check the return of this command :
+If the Plausible instance is not available at the address https://plausible.example.com check the return of this command:
+
 ```bash
 dokku proxy:ports plausible
 ```
@@ -163,20 +165,19 @@ dokku proxy:ports plausible
     http           5000       5000
 ```
 
-If the return is not the expected one, execute this command :
+If the return is not as expected, execute this command:
 
 ```bash
 dokku proxy:ports-set plausible http:80:5000
-# if you also setup ssl:
+# if you also setup SSL:
 dokku proxy:ports-set plausible https:443:5000
 ```
 
-If the return of the command was valid and Plausible is still not available, feel free to fill an issue in the issue tracker.
+If the command's return was valid and Plausible is still not available, please create an issue in the issue tracker.
 
 ## Bonus : Rename script file
-By default, Plausible will use a file called `/js/plausible.js` which is blocked by most adblockers (Adblock business lets you pay to display your ads, but privacy-focused analytics are blocked by default. Yay).
 
-Since Plausible respects user privacy, it seems fair to collect anonymous traffic data. You can add a nginx config file: `vi /home/dokku/plausible/nginx.conf.d/rewrite.conf`:
+By default, Plausible will use a file called `/js/plausible.js` which is blocked by most adblockers. To overcome this, you can add an Nginx configuration file:  `vi /home/dokku/plausible/nginx.conf.d/rewrite.conf`:
 
 ```nginx
 rewrite ^/js/pls.js$ /js/plausible.js last;

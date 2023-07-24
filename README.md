@@ -135,7 +135,7 @@ Lastly, let's obtain an SSL certificate from [Let's Encrypt](https://letsencrypt
 dokku plugin:install https://github.com/dokku/dokku-letsencrypt.git
 
 # Set certificate contact email
-dokku config:set --no-restart plausible DOKKU_LETSENCRYPT_EMAIL=you@example.com
+dokku letsencrypt:set plausible email you@example.com
 
 # Generate certificate
 dokku letsencrypt:enable plausible

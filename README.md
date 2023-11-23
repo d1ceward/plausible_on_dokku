@@ -170,7 +170,7 @@ If the return is not as expected, execute this command:
 ```bash
 dokku proxy:ports-set plausible http:80:5000
 # if you also setup SSL:
-dokku proxy:ports-set plausible https:443:5000
+dokku proxy:ports-set plausible http:80:5000 https:443:5000
 ```
 
 If the command's return was valid and Plausible is still not available, please create an issue in the issue tracker.

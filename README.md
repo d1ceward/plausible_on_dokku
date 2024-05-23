@@ -61,11 +61,23 @@ dokku clickhouse:link plausible plausible
 
 ### Setting up secret key
 
+Configures the secret used for sessions in the dashboard.
+
 ```bash
 dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -base64 64 | tr -d '\n')
 ```
 
+### Setting up TOTP vault key
+
+Configures the secret used for encrypting TOTP secrets at rest using AES256-GCM.
+
+```bash
+dokku config:set plausible TOTP_VAULT_KEY=$(openssl rand -base64 32 | tr -d '\n')
+```
+
 ### Setting up BASE_URL
+
+Configures the base URL to use in link generation.
 
 ```bash
 dokku config:set plausible BASE_URL=https://plausible.example.com
@@ -83,6 +95,8 @@ dokku config:set plausible MAILER_EMAIL=admin@example.com \
 ```
 
 ### Disable registration (optional)
+
+Restricts registration of new users. Possible values are true (full restriction), false (no restriction), and invite_only (only the invited users can register).
 
 ```bash
 dokku config:set plausible DISABLE_REGISTRATION=true
@@ -157,20 +171,20 @@ dokku proxy:ports plausible
 ### Valid return
 -----> Port mappings for plausible
     -----> scheme  host port  container port
-    http           80         5000
+    http           80         8000
 
 ### Invalid return
 -----> Port mappings for plausible
     -----> scheme  host port  container port
-    http           5000       5000
+    http           8000       8000
 ```
 
 If the return is not as expected, execute this command:
 
 ```bash
-dokku proxy:ports-set plausible http:80:5000
+dokku proxy:ports-set plausible http:80:8000
 # if you also setup SSL:
-dokku proxy:ports-set plausible https:443:5000
+dokku proxy:ports-set plausible https:443:8000
 ```
 
 If the command's return was valid and Plausible is still not available, please create an issue in the issue tracker.

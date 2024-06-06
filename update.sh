@@ -2,6 +2,8 @@
 echo -e "\033[0;32m====>\033[0m Pull origin..."
 git pull
 
+echo -e "\033[0;32m====>\033[0m Initial check..."
+
 # Get current release name
 CURRENT_RELEASE=$(git tag --sort=committerdate | tail -1)
 

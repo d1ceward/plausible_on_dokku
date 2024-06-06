@@ -1,4 +1,4 @@
-ARG PLAUSIBLE_VERSION="v2.1.0"
+ARG PLAUSIBLE_VERSION="v2.1.1"
 
 FROM plausible/community-edition:$PLAUSIBLE_VERSION
 

@@ -64,7 +64,7 @@ dokku clickhouse:link plausible plausible
 Configures the secret used for sessions in the dashboard.
 
 ```bash
-dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -base64 64 | tr -d '\n')
+dokku config:set plausible SECRET_KEY_BASE=$(openssl rand -base64 48 | tr -d '\n')
 ```
 
 ### Setting up TOTP vault key

@@ -1,3 +1,6 @@
+#!/bin/bash
+trap "exit" INT
+
 # Pull upstream changes
 echo -e "\033[0;32m====>\033[0m Pull origin..."
 git pull

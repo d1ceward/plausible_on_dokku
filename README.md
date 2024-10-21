@@ -183,8 +183,9 @@ If the return is not as expected, execute this command:
 
 ```bash
 dokku ports:set plausible http:80:8000
+
 # if you also setup SSL:
-dokku ports:set plausible https:443:8000
+dokku ports:set plausible http:80:5000 https:443:5000
 ```
 
 If the command's return was valid and Plausible is still not available, please create an issue in the issue tracker.

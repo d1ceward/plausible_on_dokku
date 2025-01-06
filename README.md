@@ -102,6 +102,16 @@ Restricts registration of new users. Possible values are true (full restriction)
 dokku config:set plausible DISABLE_REGISTRATION=true
 ```
 
+### Persistent storage
+
+To ensure that data persists between restarts, we create a folder on the host machine, grant write permissions to the user defined in the Dockerfile, and instruct Dokku to mount it to the app container. Follow these steps:
+
+```bash
+dokku storage:ensure-directory plausible --chown false
+chown 999:65533 /var/lib/dokku/data/storage/plausible
+dokku storage:mount plausible /var/lib/dokku/data/storage/plausible:/var/lib/plausible
+```
+
 ## Domain
 
 To enable routing for the Plausible app, we need to configure the domain. Execute the following command:

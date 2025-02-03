@@ -1,6 +1,6 @@
 ARG PLAUSIBLE_VERSION="v2.1.5"
 
-FROM plausible/community-edition:$PLAUSIBLE_VERSION
+FROM ghcr.io/plausible/community-edition:$PLAUSIBLE_VERSION
 
 EXPOSE 8000/tcp
 
